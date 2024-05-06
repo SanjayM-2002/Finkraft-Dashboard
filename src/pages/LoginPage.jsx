@@ -3,6 +3,9 @@ import Heading from '../components/Heading';
 import SubHeading from '../components/SubHeading';
 import InputBox from '../components/InputBox';
 import PrimaryButton from '../components/PrimaryButton';
+import { useRecoilState } from 'recoil';
+import { userAtom } from '../store/atoms/userAtom';
+import { useNavigate } from 'react-router-dom';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +14,9 @@ const LoginPage = () => {
     username: '',
     password: '',
   });
+
+  const [userData, setUserData] = useRecoilState(userAtom);
+  const navigate = useNavigate();
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -22,6 +28,13 @@ const LoginPage = () => {
 
   const submitForm = () => {
     console.log('formdata is: ', formData);
+    setUserData({
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      username: formData.username,
+    });
+    localStorage.setItem('firstName', formData.firstName);
+    navigate('/home');
   };
   return (
     <>
